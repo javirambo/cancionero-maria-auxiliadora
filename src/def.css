@@ -1,0 +1,143 @@
+.c4 {
+  padding: 1px 5px 0 5px;
+}
+
+.w1 {
+  height: 100%;
+}
+
+.extras {
+  color: #57b700;
+}
+
+.sticky-a {
+	background-color: #ffffff;
+	position: sticky;
+	top: 0;
+}
+
+.sticky-b {
+	background-color: #ffffff;
+	position: sticky;
+	bottom: 0;
+}
+
+.btn-ssm {
+  padding: 0.25rem 0.5rem;
+  font-size: .875rem;
+  line-height: 1.0;
+  border-radius: 0.2rem;
+}
+
+.borrar {
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+}
+
+.subtit {
+  text-align: right;
+  color: #90b8e3;
+  font-size: 3.5vw;
+  margin: 0px 2vw 0px 0px;
+}
+
+.w0 {
+  width: 0;
+  margin-left: 2px;
+  margin-top: 7px;
+}
+
+.dom{
+  text-align: center;
+  padding: 4px;
+  color: #818181;
+  background-color: #e3f4ff;
+}
+
+h3 {
+  margin-top: 12px;
+  color: #B90033;
+}
+
+.logi{
+  text-align: center;padding: 20px;
+}
+
+.f1 input {
+  width: 80%;
+  float: left;
+}
+
+.f1 button {
+  float: left;
+  width: 15%;
+  margin: 4px;
+}
+
+.ok {
+  padding: 7px;
+}
+
+.grupos {
+  margin: 4px 0 4px 0;
+}
+
+.grupos a {
+  margin: 0 8px 8px 0;
+}
+
+.indice p {
+  margin-top: 0;
+  margin-bottom: 0px;
+}
+
+.btnadjt {
+  font-size: 9vw;
+}
+
+.c2 {
+  margin-bottom: 1vh;
+}
+
+.c1 {
+  text-align: center;
+  padding: 8vw;
+  margin-top: 8px;
+}
+
+.btnedit {
+  margin-left: 20px;
+}
+
+.error {
+  margin-left: 21px;
+  color: red;
+}
+
+.ovrp {
+  position: relative;
+}
+
+.ovr {
+  color: #28a745;
+  font-size: 11px;
+  font-weight: 600;
+  position: absolute;
+  left: 71px;
+  bottom: -10px;
+}
+
+.nueva {
+  margin: 8px 50px 0 2px;
+}
+
+#dofon {
+  width: 100%;
+  height: 1400px;
+  background-image: url(cruz4.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-attachment: fixed;
+}
