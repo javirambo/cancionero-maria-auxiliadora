@@ -14,12 +14,14 @@
 	background-color: #ffffff;
 	position: sticky;
 	top: 0;
+	padding: 8px;
 }
 
 .sticky-b {
 	background-color: #ffffff;
 	position: sticky;
 	bottom: 0;
+	padding: 8px;
 }
 
 .btn-ssm {
