@@ -1,0 +1,25 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Cancion {
+  id      Int     @id @default(autoincrement())
+  titulo  String
+  letra   String
+  grupo   String?
+  extras  String?
+
+  @@map("Canciones")
+}
+
+model Configuracion {
+  clave String @id
+  valor String
+
+  @@map("Configuraciones")
+}
