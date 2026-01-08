@@ -607,3 +607,102 @@ a:hover {
 .cursor-pointer {
   cursor: pointer !important;
 }
+/* Menu Styles */
+.menu-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  backdrop-filter: blur(4px) !important;
+  z-index: 100 !important;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease !important;
+}
+
+.menu-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.menu-content {
+  position: fixed !important;
+  top: 0 !important;
+  right: -280px !important;
+  width: 280px !important;
+  height: 100% !important;
+  background-color: #ffffff !important;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1) !important;
+  z-index: 101 !important;
+  transition: right 0.3s ease-in-out !important;
+  padding: 1.5rem !important;
+  overflow-y: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+}
+
+.menu-overlay.open .menu-content {
+  right: 0 !important;
+}
+
+.menu-item {
+  font-size: 0.95rem !important;
+  font-weight: 500 !important;
+  color: #334155 !important;
+  text-decoration: none !important;
+  padding: 0.75rem 0.5rem !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  transition: all 0.2s !important;
+  display: block !important;
+  border-radius: 0.5rem !important;
+}
+
+.menu-item:hover {
+  color: #2563eb !important;
+  background-color: #f8fafc !important;
+}
+
+.menu-category-title {
+  font-size: 0.7rem !important;
+  font-weight: 800 !important;
+  color: #94a3b8 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  margin-top: 1.5rem !important;
+  padding-left: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.hamburger-btn {
+  position: fixed !important;
+  top: 1.25rem !important;
+  right: 1rem !important;
+  background: white !important;
+  border: 1px solid #e1e8f0 !important;
+  border-radius: 0.75rem !important;
+  cursor: pointer !important;
+  padding: 0.75rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 5px !important;
+  z-index: 110 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+.hamburger-line {
+  width: 20px !important;
+  height: 2px !important;
+  background-color: #0f172a !important;
+  transition: all 0.3s ease !important;
+  border-radius: 1px !important;
+}
+
+.hamburger-btn.open .hamburger-line:nth-child(1) {
+  transform: translateY(7px) rotate(45deg) !important;
+}
+.hamburger-btn.open .hamburger-line:nth-child(2) {
+  opacity: 0 !important;
+}
+.hamburger-btn.open .hamburger-line:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg) !important;
+}
