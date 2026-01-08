@@ -20,6 +20,13 @@ Incluye buscador, letras, acordes y herramientas para uso litúrgico o personal.
 3. Editar `config.php` con tus parámetros de conexión a base de datos.
 4. Abrir el proyecto en el navegador.
 
+## Nueva APP en Next.js !
+
+Con la ayuda de Antigravity se ha migrado la aplicación de PHP a Next.js !
+
+La base de datos está alojada en TURSO y es sqlite.
+
+
 ## Licencia
 
 El **código fuente** (PHP y JavaScript) de este proyecto se distribuye bajo la licencia **MIT**.

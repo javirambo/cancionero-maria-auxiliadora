@@ -25,15 +25,15 @@ export default function CategoryButtons() {
     };
 
     return (
-        <div className="flex flex-wrap gap-2 mt-8 justify-center">
+        <div className="flex flex-wrap gap-2 mb-8 justify-center px-4">
             {CATEGORIES.map((cat) => (
                 <button
                     key={cat}
                     onClick={() => handleCategory(cat)}
-                    className={`px-3 py-2 text-sm font-bold rounded uppercase transition-colors
+                    className={`nav-btn
             ${(currentCategory === cat || (cat === 'Todas' && !currentCategory))
-                            ? 'bg-yellow-400 text-black'
-                            : 'bg-blue-500 text-white hover:bg-blue-600'
+                            ? 'btn-blue'
+                            : 'btn-gray'
                         }`}
                 >
                     {cat}

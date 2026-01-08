@@ -1,10 +1,9 @@
 'use server';
 
-import { PrismaClient, Cancion } from '@prisma/client';
+import prisma from '@/lib/prisma';
+import { type Cancion } from '@prisma/client';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-
-const prisma = new PrismaClient();
 
 const PASSWORD = process.env.ADMIN_PASSWORD || 'Coro2021';
 

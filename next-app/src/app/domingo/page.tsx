@@ -17,7 +17,7 @@ export default async function DomingoPage() {
 
                 <div className="flex flex-col gap-2">
                     <h1 className="text-3xl font-extrabold text-foreground">
-                        Domingo
+                        Domingo (Misa Hoy)
                     </h1>
                 </div>
             </div>

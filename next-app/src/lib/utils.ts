@@ -15,12 +15,12 @@ export function formatLyrics(text: string) {
     if (!text) return text;
 
     // First decode entities so we work with real characters
-    let decoded = decodeEntities(text);
+    const decoded = decodeEntities(text);
 
     // Unescape literal \r\n (if present due to DB migration issues)
     // Also handle standard newlines.
     // Normalize all to \n
-    let normalized = decoded.replace(/\\r\\n/g, '\n').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+    const normalized = decoded.replace(/\\r\\n/g, '\n').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
 
     // Split into paragraphs by double newlines
     const blocks = normalized.split(/\n\s*\n/);

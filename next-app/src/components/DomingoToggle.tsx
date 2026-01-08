@@ -25,7 +25,7 @@ export default function DomingoToggle({ id, initialOn, isAuth }: { id: number, i
             disabled={isLoading}
             className={`nav-btn ${isOn ? 'btn-blue' : 'btn-gray'}`}
         >
-            {isLoading ? '...' : isOn ? 'Quitar de Domingo' : 'Agregar a Domingo'}
+            {isLoading ? '...' : isOn ? 'Quitar de Hoy' : 'Agregar a Hoy'}
         </button>
     );
 }

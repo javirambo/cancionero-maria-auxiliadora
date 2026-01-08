@@ -34,3 +34,18 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+# TURSO
+
+- base de datos sqlite en la nube:
+
+    url
+    
+    libsql://cancionero-javirambo.aws-us-east-2.turso.io
+    
+    token
+
+    eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3Njc4NzYyOTQsImlkIjoiZWE0MjY1ZGYtM2EyMS00YWU2LWE0NmEtMTcyZGUyYmQ5MzM2IiwicmlkIjoiOTViODgyNDctN2U5Ni00MjY2LWFmMGEtNTZjYzJlM2EwYzQ0In0.H1OYUHo_FoN8xAC5WquPGBHaLWGfEmnPPRV9Elt6h4zl14BJ08F_yGxdNHozoQ6u5OJc9xzkL-futO8dLCF3DQ
+
+

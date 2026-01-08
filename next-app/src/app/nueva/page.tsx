@@ -86,7 +86,7 @@ export default async function NuevaCancionPage() {
                     <button type="submit" className="btn btn-primary flex-1">
                         Guardar
                     </button>
-                    <Link href="/" className="btn bg-slate-100 text-slate-600 hover:bg-slate-200 flex-1 text-center">
+                    <Link href="/" className="btn btn-gray flex-1 text-center">
                         Cancelar
                     </Link>
                 </div>

@@ -14,7 +14,6 @@ export default async function Home(props: { searchParams: Promise<{ q?: string; 
       <Suspense fallback={<div className="h-12 w-full bg-muted/20 rounded-xl animate-pulse" />}>
         <SearchInput />
       </Suspense>
-
       <div className="min-h-[50vh]">
         <SongList songs={songs} />
       </div>

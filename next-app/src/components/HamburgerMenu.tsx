@@ -66,14 +66,14 @@ export default function HamburgerMenu({ isAuth }: { isAuth: boolean }) {
                             <>
                                 <Link
                                     href="/nueva"
-                                    className="menu-item text-green-700 font-bold"
+                                    className="menu-item menu-item-green font-bold"
                                 >
                                     + Nueva Canci&oacute;n
                                 </Link>
                                 <form action={logout}>
                                     <button
                                         type="submit"
-                                        className="menu-item text-red-600 text-left w-full bg-transparent border-none cursor-pointer"
+                                        className="menu-item menu-item-red font-bold text-left w-full cursor-pointer"
                                     >
                                         Cerrar Sesi&oacute;n
                                     </button>
