@@ -4,8 +4,10 @@ $errorMsg = "";
 $validUser = $_SESSION["login"] === true;
 if (isset($_POST["sub"])) {
   $validUser = strcasecmp($_POST["usuario"], "Coro2021") == 0;
-  if (!$validUser) $errorMsg = "ACCESO INCORRECTO!";
-  else $_SESSION["login"] = true;
+  if (!$validUser)
+    $errorMsg = "ACCESO INCORRECTO!";
+  else
+    $_SESSION["login"] = true;
 }
 if ($validUser) {
   header("Location: index.php");

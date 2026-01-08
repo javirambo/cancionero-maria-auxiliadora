@@ -24,7 +24,7 @@ export default function SearchInput() {
         <div className="relative mb-6">
             <input
                 type="text"
-                placeholder="Buscar canci&oacute;n..."
+                placeholder="Busca por n&uacute;mero o parte del nombre o letra..."
                 className="input w-full pl-10 h-12 text-lg"
                 defaultValue={searchParams.get('q')?.toString()}
                 onChange={(e) => handleSearch(e.target.value)}

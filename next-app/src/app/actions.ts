@@ -15,8 +15,24 @@ export async function getSongs(query: string = '', category: string = '') {
     ];
 
     const numericQuery = Number(query);
-    if (!isNaN(numericQuery) && numericQuery > 0) {
-        orConditions.unshift({ id: numericQuery });
+    if (!isNaN(numericQuery) && numericQuery > 0 && query.trim() !== '') {
+        // Match IDs that start with the given digits
+        // e.g. "12" matches 12, 120-129, 1200-1299
+        orConditions.push({ id: numericQuery });
+
+        // Ranges for 10s, 100s, 1000s
+        let multiplier = 10;
+        while (multiplier <= 1000) {
+            const start = numericQuery * multiplier;
+            const end = start + (multiplier - 1);
+            orConditions.push({
+                id: {
+                    gte: start,
+                    lte: end
+                }
+            });
+            multiplier *= 10;
+        }
     }
 
     const where: any = {
@@ -97,4 +113,48 @@ export async function logout() {
 export async function isAuthenticated() {
     const cookieStore = await cookies();
     return cookieStore.get('auth')?.value === 'true';
+}
+
+export async function getMaxSongId() {
+    const result = await prisma.cancion.aggregate({
+        _max: {
+            id: true
+        }
+    });
+    return (result._max.id || 0) + 1;
+}
+
+export async function createSong(data: { id: number; titulo: string; grupo: string; letra: string }) {
+    if (!await isAuthenticated()) throw new Error('Unauthorized');
+
+    await prisma.cancion.create({
+        data: {
+            id: data.id,
+            titulo: data.titulo,
+            grupo: data.grupo,
+            letra: data.letra
+        }
+    });
+
+    redirect(`/cancion/${data.id}`);
+}
+
+export async function deleteSong(id: number) {
+    if (!await isAuthenticated()) throw new Error('Unauthorized');
+
+    await prisma.cancion.delete({
+        where: { id }
+    });
+
+    // Also remove from domingo list if present
+    const ids = await getDomingoIds();
+    if (ids.includes(id)) {
+        const newIds = ids.filter(i => i !== id);
+        await prisma.configuracion.update({
+            where: { clave: 'domingo' },
+            data: { valor: newIds.join(' ') }
+        });
+    }
+
+    redirect('/');
 }

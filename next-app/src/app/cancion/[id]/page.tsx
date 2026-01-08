@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { getSong, getDomingoIds, isAuthenticated } from '@/app/actions';
 import { formatLyrics, decodeEntities } from '@/lib/utils';
 import DomingoToggle from '@/components/DomingoToggle';
+import DeleteSongButton from '@/components/DeleteSongButton';
 
 export default async function SongPage(props: { params: Promise<{ id: string }> }) {
     const params = await props.params;
@@ -30,9 +31,10 @@ export default async function SongPage(props: { params: Promise<{ id: string }> 
                 </Link>
 
                 <div className="flex flex-col items-center gap-2">
-                    <h1 className="text-3xl font-extrabold">{song.id}. {decodedTitle}</h1>
-                    <div className="mt-2">
+                    <h1 className="text-3xl font-extrabold text-accent-red">{song.id}. {decodedTitle}</h1>
+                    <div className="mt-2 flex items-center gap-6">
                         <DomingoToggle id={song.id} initialOn={isDomingo} isAuth={isAuth} />
+                        {isAuth && <DeleteSongButton id={song.id} />}
                     </div>
                 </div>
             </div>

@@ -16,24 +16,26 @@ export default async function Home(props: { searchParams: Promise<{ q?: string; 
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex gap-8 items-center justify-center w-full mb-4">
-        <Link href="/domingo" className="text-sm hover:text-primary transition-colors  tracking-widest text-foreground">
-          Misa hoy
+      <div className="flex gap-3 items-center justify-center w-full mb-6 flex-wrap">
+        {isAuth && (
+          <Link href="/nueva" className="nav-btn btn-green">
+            + NUEVA
+          </Link>
+        )}
+        <Link href="/domingo" className="nav-btn btn-blue">
+          Domingo
         </Link>
         {isAuth ? (
-          <div className="flex gap-4 items-center">
-            <span className="text-xs px-3 py-1 rounded bg-green-100 text-green-700 border border-green-200 font-extra-bold">ADMIN</span>
-            <form action={async () => {
-              'use server';
-              await logout();
-            }}>
-              <button type="submit" className="text-sm text-red-600 hover:text-red-800 transition-colors  tracking-widest cursor-pointer border-none bg-transparent">
-                Salir
-              </button>
-            </form>
-          </div>
+          <form action={async () => {
+            'use server';
+            await logout();
+          }}>
+            <button type="submit" className="nav-btn btn-red">
+              Salir
+            </button>
+          </form>
         ) : (
-          <Link href="/login" className="text-sm text-muted hover:text-foreground transition-colors  tracking-widest">
+          <Link href="/login" className="nav-btn btn-gray">
             Login
           </Link>
         )}
