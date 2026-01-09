@@ -21,6 +21,9 @@ export default function SongList({ songs }: { songs: Cancion[] }) {
                 >
                     <span className="font-bold text-accent-blue mr-1">{song.id}&nbsp;</span>
                     <span className="font-medium text-foreground">{decodeEntities(song.titulo)}</span>
+                    {song.autor && (
+                        <span className="text-sm text-muted ml-2">{decodeEntities(song.autor)}</span>
+                    )}
                 </Link>
             ))}
         </div>

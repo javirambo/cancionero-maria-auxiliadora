@@ -100,7 +100,7 @@ export default function SongForm({ id, song, categories, onSubmit, isNew = false
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1">
-                        <label htmlFor="autor" className="text-sm font-bold text-muted">Autor / Int&eacute;rprete</label>
+                        <label htmlFor="autor" className="text-sm font-bold text-muted">Autor</label>
                         <input
                             type="text"
                             id="autor"
