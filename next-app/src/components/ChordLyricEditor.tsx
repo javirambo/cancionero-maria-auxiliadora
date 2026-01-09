@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
     DndContext,
     closestCenter,
@@ -29,6 +29,7 @@ interface Line {
 interface ChordLyricEditorProps {
     initialValue?: string;
     name: string;
+    onDirtyChange?: (isDirty: boolean) => void;
 }
 
 function SortableItem({
@@ -132,7 +133,7 @@ function SortableItem({
     );
 }
 
-export default function ChordLyricEditor({ initialValue, name }: ChordLyricEditorProps) {
+export default function ChordLyricEditor({ initialValue, name, onDirtyChange }: ChordLyricEditorProps) {
     const [lines, setLines] = useState<Line[]>(() => {
         if (initialValue) {
             try {
@@ -150,6 +151,41 @@ export default function ChordLyricEditor({ initialValue, name }: ChordLyricEdito
         }
         return [{ id: 'line-0', c: '', l: '' }];
     });
+
+    const [isDirty, setIsDirty] = useState(false);
+
+    // Track if content has changed since initial load
+    useEffect(() => {
+        const currentData = JSON.stringify(lines.map(({ id, ...rest }) => rest));
+        let initialData = '[]';
+        if (initialValue) {
+            try {
+                const parsed = JSON.parse(initialValue);
+                initialData = JSON.stringify(parsed);
+            } catch (e) {
+                initialData = JSON.stringify([{ c: '', l: initialValue }]);
+            }
+        } else {
+            initialData = JSON.stringify([{ c: '', l: '' }]);
+        }
+
+        const dirty = currentData !== initialData;
+        setIsDirty(dirty);
+        if (onDirtyChange) onDirtyChange(dirty);
+    }, [lines, initialValue, onDirtyChange]);
+
+    // Warn before closing tab if dirty
+    useEffect(() => {
+        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+            if (isDirty) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    }, [isDirty]);
 
     const sensors = useSensors(
         useSensor(PointerSensor, {

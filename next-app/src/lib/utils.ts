@@ -1,3 +1,61 @@
+const NOTES_EN = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+const NOTES_LATIN = ['Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa', 'Fa#', 'Sol', 'Sol#', 'La', 'La#', 'Si'];
+
+const NOTE_MAP: { [key: string]: number } = {
+    'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3, 'Eb': 3, 'E': 4, 'F': 5, 'F#': 6, 'Gb': 6, 'G': 7, 'G#': 8, 'Ab': 8, 'A': 9, 'A#': 10, 'Bb': 10, 'B': 11,
+    'DO': 0, 'DO#': 1, 'RE': 2, 'RE#': 3, 'MI': 4, 'FA': 5, 'FA#': 6, 'SOL': 7, 'SOL#': 8, 'LA': 9, 'LA#': 10, 'SI': 11,
+    'REB': 1, 'MIB': 3, 'GAB': 6, 'SOLB': 6, 'LAB': 8, 'SIB': 10
+};
+
+// Also support lowercase and TitleCase for mapping
+Object.keys(NOTE_MAP).forEach(key => {
+    NOTE_MAP[key.toLowerCase()] = NOTE_MAP[key];
+    // Special case for 'Do', 'Re' etc as they are usually TitleCase
+    // Only apply if the key is longer than 1 char (i.e., not 'C', 'D', etc.)
+    if (key.length > 1) {
+        const titleCase = key.charAt(0).toUpperCase() + key.slice(1).toLowerCase();
+        NOTE_MAP[titleCase] = NOTE_MAP[key];
+    }
+});
+
+export function transposeChord(chord: string, semitones: number): string {
+    if (!chord || semitones === 0) return chord;
+
+    // This regex looks for:
+    // 1. Latin notes: Do, Re, Mi, Fa, Sol, La, Si (case insensitive, optional # or b)
+    // 2. English notes: A, B, C, D, E, F, G (case insensitive, optional # or b)
+    const regex = /(Do|Re|Mi|Fa|Sol|La|Si|[A-G])([#b]?)/gi;
+
+    return chord.replace(regex, (match, note, accidental) => {
+        const fullNote = (note + accidental); // Keep original casing for now to check against NOTE_MAP
+        const currentPos = NOTE_MAP[fullNote.toUpperCase()]; // Lookup in uppercase NOTE_MAP
+
+        if (currentPos === undefined) return match;
+
+        // Calculate new position
+        let newPos = (currentPos + semitones) % 12;
+        if (newPos < 0) newPos += 12;
+
+        // Determine which notation system to return
+        // If the original was English notation (1 char for the base note), return English
+        // If the original was Latin notation (2+ chars for the base note), return Latin
+        const isEnglish = /^[A-G]$/i.test(note);
+
+        if (isEnglish) {
+            const newNote = NOTES_EN[newPos];
+            // Preserve casing for English: 'C' -> 'D', 'c' -> 'd'
+            return note === note.toUpperCase() ? newNote : newNote.toLowerCase();
+        } else {
+            const newNote = NOTES_LATIN[newPos];
+            // Preserve casing for Latin: 'Do' -> 'Re', 'do' -> 're', 'DO' -> 'RE'
+            if (note === note.toLowerCase()) return newNote.toLowerCase();
+            if (note === note.toUpperCase()) return newNote.toUpperCase();
+            // Default to TitleCase (Do, Re, Mi)
+            return newNote;
+        }
+    });
+}
+
 export function decodeEntities(text: string) {
     if (!text) return text;
     const entities: { [key: string]: string } = {
@@ -33,7 +91,7 @@ export function formatLyrics(text: string) {
                     const decodedLyrics = decodeEntities(line.l || '');
 
                     if (!decodedChords.trim() && !decodedLyrics.trim()) {
-                        return '<div class="mb-4"></div>'; // Empty line
+                        return '<div class="interlinear-block">&nbsp;</div>'; // Empty line for vertical spacing
                     }
 
                     // Apply bolding to lyrics in interlinear mode

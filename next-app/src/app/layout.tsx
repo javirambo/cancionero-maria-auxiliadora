@@ -24,6 +24,8 @@ export const viewport = {
   maximumScale: 1,
 };
 
+import { TransposeProvider } from "@/components/TransposeContext";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -32,10 +34,12 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-background text-foreground antialiased`}>
-        <Navbar />
-        <main className="container py-6">
-          {children}
-        </main>
+        <TransposeProvider>
+          <Navbar />
+          <main className="container py-6">
+            {children}
+          </main>
+        </TransposeProvider>
       </body>
     </html>
   );

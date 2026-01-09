@@ -3,6 +3,7 @@
 import prisma from '@/lib/prisma';
 import { type Cancion } from '@prisma/client';
 import { cookies } from 'next/headers';
+import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 const PASSWORD = process.env.ADMIN_PASSWORD || 'Coro2021';
@@ -123,22 +124,24 @@ export async function getMaxSongId() {
     return (result._max.id || 0) + 1;
 }
 
-export async function createSong(data: { id: number; titulo: string; grupo: string; letra: string }) {
+export async function createSong(data: { id: number, titulo: string, letra: string, grupo: string, extras?: string }) {
     if (!await isAuthenticated()) throw new Error('Unauthorized');
 
     await prisma.cancion.create({
         data: {
             id: data.id,
             titulo: data.titulo,
+            letra: data.letra,
             grupo: data.grupo,
-            letra: data.letra
+            extras: data.extras || null
         }
     });
 
+    revalidatePath('/');
     redirect(`/cancion/${data.id}`);
 }
 
-export async function updateSong(id: number, data: { titulo: string; grupo: string; letra: string }) {
+export async function updateSong(id: number, data: { titulo: string, grupo: string, letra: string, extras?: string }) {
     if (!await isAuthenticated()) throw new Error('Unauthorized');
 
     await prisma.cancion.update({
@@ -146,7 +149,8 @@ export async function updateSong(id: number, data: { titulo: string; grupo: stri
         data: {
             titulo: data.titulo,
             grupo: data.grupo,
-            letra: data.letra
+            letra: data.letra,
+            extras: data.extras || null
         }
     });
 
