@@ -31,7 +31,9 @@ export default function TransposableLyrics({ lyricsJson }: TransposableLyricsPro
                     </div>
                 )}
                 {rawLines.map((line: string, idx: number) => {
-                    const transposedLine = transposeChord(decodeEntities(line), semitones);
+                    const transposeLine = (txt: string) =>
+                        txt.replace(/(?:Do|Re|Mi|Fa|Sol|La|Si|[A-G][#b]?)/gi, (match) => transposeChord(match, semitones));
+                    const transposedLine = transposeLine(decodeEntities(line));
                     return <div key={idx} dangerouslySetInnerHTML={{ __html: transposedLine || '&nbsp;' }} />;
                 })}
             </div>
