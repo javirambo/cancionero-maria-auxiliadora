@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import BottomBar from "@/components/BottomBar";
@@ -43,7 +44,9 @@ export default function RootLayout({
               <main className="container py-6 pb-24">
                 {children}
               </main>
-              <BottomBar />
+              <Suspense fallback={null}>
+                <BottomBar />
+              </Suspense>
             </SongProvider>
           </ChordsProvider>
         </TransposeProvider>
