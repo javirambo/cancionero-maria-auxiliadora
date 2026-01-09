@@ -138,6 +138,21 @@ export async function createSong(data: { id: number; titulo: string; grupo: stri
     redirect(`/cancion/${data.id}`);
 }
 
+export async function updateSong(id: number, data: { titulo: string; grupo: string; letra: string }) {
+    if (!await isAuthenticated()) throw new Error('Unauthorized');
+
+    await prisma.cancion.update({
+        where: { id },
+        data: {
+            titulo: data.titulo,
+            grupo: data.grupo,
+            letra: data.letra
+        }
+    });
+
+    redirect(`/cancion/${id}`);
+}
+
 export async function deleteSong(id: number) {
     if (!await isAuthenticated()) throw new Error('Unauthorized');
 

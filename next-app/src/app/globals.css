@@ -211,7 +211,7 @@ a:hover {
 /* Layout Utilities */
 .container {
   width: 100%;
-  max-width: 640px;
+  max-width: 1024px;
   margin: 0 auto;
   padding: 0 1rem;
 }
@@ -248,8 +248,64 @@ a:hover {
   justify-content: space-between;
 }
 
+.w-full {
+  width: 100% !important;
+}
+
+.flex-1 {
+  flex: 1 1 0% !important;
+}
+
+.gap-1 {
+  gap: 0.25rem !important;
+}
+
+.gap-2 {
+  gap: 0.5rem !important;
+}
+
+.gap-4 {
+  gap: 1rem !important;
+}
+
+.gap-6 {
+  gap: 1.5rem !important;
+}
+
 .justify-center {
   justify-content: center;
+}
+
+.line-controls {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.25rem !important;
+  opacity: 1 !important;
+  transition: opacity 0.2s ease-in-out !important;
+  flex-shrink: 0 !important;
+  min-width: 38px !important;
+}
+
+.line-controls button {
+  padding: 0.5rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+@media (hover: hover) {
+  .line-controls {
+    opacity: 0 !important;
+    min-width: auto !important;
+  }
+
+  .line-controls button {
+    padding: 0.25rem !important;
+  }
+
+  .group:hover .line-controls {
+    opacity: 1 !important;
+  }
 }
 
 .gap-0\.5 {
@@ -617,6 +673,35 @@ a:hover {
   cursor: pointer !important;
 }
 
+/* Chords & Lyrics Styling */
+.chord-line {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+  font-weight: 700 !important;
+  color: var(--primary) !important;
+  font-size: 0.95rem !important;
+  line-height: 1 !important;
+  white-space: pre !important;
+  display: block !important;
+}
+
+.lyric-line {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+  color: var(--foreground) !important;
+  font-size: 1rem !important;
+  line-height: 1.2 !important;
+  white-space: pre !important;
+  display: block !important;
+  margin-bottom: 0 !important;
+}
+
+.interlinear-block {
+  margin-bottom: 0.85rem !important;
+}
+
+.monospace-input {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+}
+
 /* Menu Styles */
 .menu-overlay {
   position: fixed !important;
@@ -744,4 +829,8 @@ a:hover {
 
 .hamburger-btn.open .hamburger-line:nth-child(3) {
   transform: translateY(-7px) rotate(-45deg) !important;
+}
+
+.min-w-0 {
+  min-width: 0 !important;
 }
