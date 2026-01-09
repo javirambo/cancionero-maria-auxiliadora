@@ -6,6 +6,7 @@ import {
     closestCenter,
     KeyboardSensor,
     PointerSensor,
+    TouchSensor,
     useSensor,
     useSensors,
     DragEndEvent
@@ -77,6 +78,7 @@ function SortableItem({
                 {...listeners}
                 className="mt-2 p-2 cursor-grab active:cursor-grabbing text-slate-300 hover:text-slate-500 rounded-lg hover:bg-slate-50 transition-colors"
                 title="Arrastrar para reordenar"
+                style={{ touchAction: 'none' }}
             >
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="5" r="1" /><circle cx="9" cy="12" r="1" /><circle cx="9" cy="19" r="1" /><circle cx="15" cy="5" r="1" /><circle cx="15" cy="12" r="1" /><circle cx="15" cy="19" r="1" /></svg>
             </div>
@@ -152,7 +154,13 @@ export default function ChordLyricEditor({ initialValue, name }: ChordLyricEdito
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: {
-                distance: 5, // Allow some movement before drag starts (useful for touch)
+                distance: 8,
+            },
+        }),
+        useSensor(TouchSensor, {
+            activationConstraint: {
+                delay: 250,
+                tolerance: 5,
             },
         }),
         useSensor(KeyboardSensor, {
