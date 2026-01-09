@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { useTranspose } from '@/components/TransposeContext';
 import { transposeChord, decodeEntities } from '@/lib/utils';
 
@@ -11,9 +10,10 @@ interface Line {
 
 interface TransposableLyricsProps {
     lyricsJson: string;
+    showChords?: boolean;
 }
 
-export default function TransposableLyrics({ lyricsJson }: TransposableLyricsProps) {
+export default function TransposableLyrics({ lyricsJson, showChords = true }: TransposableLyricsProps) {
     const { semitones } = useTranspose();
     let lines: Line[] = [];
     try {
@@ -73,7 +73,7 @@ export default function TransposableLyrics({ lyricsJson }: TransposableLyricsPro
 
                     return (
                         <div key={idx} className="interlinear-block">
-                            {hasChords && (
+                            {hasChords && showChords && (
                                 <span className="chord-line">{transposedChords}</span>
                             )}
                             <span

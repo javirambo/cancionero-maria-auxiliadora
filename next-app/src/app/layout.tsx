@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Navbar from "@/components/Navbar";
+import BottomBar from "@/components/BottomBar";
+import { TransposeProvider } from "@/components/TransposeContext";
+import { ChordsProvider } from "@/components/ChordsContext";
+import { SongProvider } from "@/components/SongContext";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -24,8 +28,6 @@ export const viewport = {
   maximumScale: 1,
 };
 
-import { TransposeProvider } from "@/components/TransposeContext";
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -35,10 +37,15 @@ export default function RootLayout({
     <html lang="es">
       <body className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-background text-foreground antialiased`}>
         <TransposeProvider>
-          <Navbar />
-          <main className="container py-6">
-            {children}
-          </main>
+          <ChordsProvider>
+            <SongProvider>
+              <Navbar />
+              <main className="container py-6 pb-24">
+                {children}
+              </main>
+              <BottomBar />
+            </SongProvider>
+          </ChordsProvider>
         </TransposeProvider>
       </body>
     </html>

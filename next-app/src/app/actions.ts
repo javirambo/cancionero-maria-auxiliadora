@@ -8,45 +8,60 @@ import { redirect } from 'next/navigation';
 
 const PASSWORD = process.env.ADMIN_PASSWORD || 'Coro2021';
 
+// Normalize text by removing accents for search comparison
+function normalizeText(text: string): string {
+    return text
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+}
+
 export async function getSongs(query: string = '', category: string = '') {
-    const orConditions: any[] = [
-        { titulo: { contains: query } },
-        { letra: { contains: query } },
-    ];
-
-    const numericQuery = Number(query);
-    if (!isNaN(numericQuery) && numericQuery > 0 && query.trim() !== '') {
-        // Match IDs that start with the given digits
-        // e.g. "12" matches 12, 120-129, 1200-1299
-        orConditions.push({ id: numericQuery });
-
-        // Ranges for 10s, 100s, 1000s
-        let multiplier = 10;
-        while (multiplier <= 1000) {
-            const start = numericQuery * multiplier;
-            const end = start + (multiplier - 1);
-            orConditions.push({
-                id: {
-                    gte: start,
-                    lte: end
-                }
-            });
-            multiplier *= 10;
-        }
-    }
-
-    const where: any = {
-        OR: orConditions,
-    };
+    // Build base query
+    const where: any = {};
 
     if (category && category !== 'Todas') {
         where.grupo = category;
     }
 
-    const songs = await prisma.cancion.findMany({
-        where: where,
+    // Fetch songs (filtered by category if specified)
+    let songs = await prisma.cancion.findMany({
+        where: Object.keys(where).length > 0 ? where : undefined,
         orderBy: { id: 'asc' },
     });
+
+    // If no search query, return all songs
+    if (!query.trim()) {
+        return songs;
+    }
+
+    const normalizedQuery = normalizeText(query);
+    const numericQuery = Number(query);
+    const isNumeric = !isNaN(numericQuery) && numericQuery > 0 && query.trim() !== '';
+
+    // Filter songs by normalized text search or ID match
+    songs = songs.filter(song => {
+        // Check ID match (exact or prefix)
+        if (isNumeric) {
+            const idStr = song.id.toString();
+            if (idStr === query || idStr.startsWith(query)) {
+                return true;
+            }
+        }
+
+        // Check title match (accent-insensitive)
+        if (normalizeText(song.titulo).includes(normalizedQuery)) {
+            return true;
+        }
+
+        // Check lyrics match (accent-insensitive)
+        if (normalizeText(song.letra).includes(normalizedQuery)) {
+            return true;
+        }
+
+        return false;
+    });
+
     return songs;
 }
 

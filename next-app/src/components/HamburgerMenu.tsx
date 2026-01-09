@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { logout } from '@/app/actions';
-import { useTranspose } from './TransposeContext';
+import { logout, deleteSong, toggleDomingo } from '@/app/actions';
+import { useSong } from './SongContext';
 
 const CATEGORIES = [
     'ENTRADA', 'PERDON', 'GLORIA', 'ALELUYA', 'OFRENDAS', 'SANTO', 'COMUNION',
@@ -15,9 +15,16 @@ const CATEGORIES = [
 
 export default function HamburgerMenu({ isAuth }: { isAuth: boolean }) {
     const [isOpen, setIsOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
     const pathname = usePathname();
-    const { semitones, increment, decrement, reset, isSongPage } = useTranspose();
+    const { songId, isDomingo } = useSong();
+    const [isOnDomingo, setIsOnDomingo] = useState(isDomingo);
+
+    // Sync isDomingo state when context changes
+    useEffect(() => {
+        setIsOnDomingo(isDomingo);
+    }, [isDomingo]);
 
     const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -33,6 +40,26 @@ export default function HamburgerMenu({ isAuth }: { isAuth: boolean }) {
             params.set('category', cat);
         }
         router.push(`/?${params.toString()}`);
+    };
+
+    const handleToggleDomingo = async () => {
+        if (!isAuth || !songId) return;
+        setIsLoading(true);
+        try {
+            const newState = await toggleDomingo(songId);
+            setIsOnDomingo(newState);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleDelete = async () => {
+        if (!songId) return;
+        if (confirm('¿Estás seguro de que deseas eliminar esta canción?')) {
+            setIsOpen(false);
+            await deleteSong(songId);
+            router.push('/');
+        }
     };
 
     return (
@@ -55,50 +82,14 @@ export default function HamburgerMenu({ isAuth }: { isAuth: boolean }) {
                             href="/"
                             className="menu-item"
                         >
-                            Inicio (Índice)
+                            Lista general
                         </Link>
                         <Link
                             href="/domingo"
                             className="menu-item font-bold"
                         >
-                            Domingo (Misa Hoy)
+                            Lista domingo
                         </Link>
-
-                        {isSongPage && (
-                            <div className="flex flex-col gap-2 p-3 bg-accent-red/5 rounded-xl border border-accent-red/10 mt-2">
-                                <span className="text-[10px] font-extrabold uppercase tracking-widest text-accent-red/60 ml-1">
-                                    Transportar Tono
-                                </span>
-                                <div className="flex items-center justify-between gap-2">
-                                    <button
-                                        onClick={decrement}
-                                        className="btn btn-gray flex-1 h-10 text-xl font-bold"
-                                    >
-                                        -
-                                    </button>
-                                    <div className="flex flex-col items-center min-w-[60px]">
-                                        <span className="text-xs text-muted leading-none">Actual</span>
-                                        <span className={`text-lg font-bold ${semitones === 0 ? 'text-muted' : 'text-accent-red'}`}>
-                                            {semitones > 0 ? `+${semitones}` : semitones}
-                                        </span>
-                                    </div>
-                                    <button
-                                        onClick={increment}
-                                        className="btn btn-gray flex-1 h-10 text-xl font-bold"
-                                    >
-                                        +
-                                    </button>
-                                </div>
-                                {semitones !== 0 && (
-                                    <button
-                                        onClick={reset}
-                                        className="text-xs text-accent-red hover:underline font-bold py-1"
-                                    >
-                                        Restablecer Tono Original
-                                    </button>
-                                )}
-                            </div>
-                        )}
 
                         {isAuth ? (
                             <>
@@ -108,6 +99,30 @@ export default function HamburgerMenu({ isAuth }: { isAuth: boolean }) {
                                 >
                                     + Nueva Canci&oacute;n
                                 </Link>
+                                {songId && (
+                                    <>
+                                        <span className="menu-category-title">Esta Canci&oacute;n</span>
+                                        <button
+                                            onClick={handleToggleDomingo}
+                                            disabled={isLoading}
+                                            className="menu-item text-left w-full cursor-pointer"
+                                        >
+                                            {isLoading ? '...' : isOnDomingo ? '✓ En Domingo' : '+ Agregar a Domingo'}
+                                        </button>
+                                        <Link
+                                            href={`/cancion/${songId}/edit`}
+                                            className="menu-item"
+                                        >
+                                            Editar
+                                        </Link>
+                                        <button
+                                            onClick={handleDelete}
+                                            className="menu-item menu-item-red text-left w-full cursor-pointer"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </>
+                                )}
                                 <form action={logout}>
                                     <button
                                         type="submit"
