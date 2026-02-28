@@ -40,6 +40,7 @@ function SortableItem({
     updateLine,
     removeLine,
     moveLine,
+    toggleBold,
     isFirst,
     isLast
 }: {
@@ -49,6 +50,7 @@ function SortableItem({
     updateLine: (index: number, field: keyof Line, value: string) => void;
     removeLine: (index: number) => void;
     moveLine: (index: number, direction: 'up' | 'down') => void;
+    toggleBold: (index: number) => void;
     isFirst: boolean;
     isLast: boolean;
 }) {
@@ -68,21 +70,23 @@ function SortableItem({
         opacity: isDragging ? 0.5 : 1,
     };
 
+    const isBold = /^\*.*\*$/.test(line.l.trim());
+
     return (
         <div
             ref={setNodeRef}
             style={style}
-            className={`flex gap-3 items-start border-b border-slate-100 pb-4 last:border-0 group bg-card transition-shadow ${isDragging ? 'shadow-2xl rounded-xl border-transparent' : ''}`}
+            className={`flex gap-1 items-start border-b border-slate-100 pb-2 last:border-0 group bg-card transition-shadow ${isDragging ? 'shadow-2xl rounded-xl border-transparent' : ''}`}
         >
             {/* Drag Handle */}
             <div
                 {...attributes}
                 {...listeners}
-                className="mt-2 p-2 cursor-grab active:cursor-grabbing text-slate-300 hover:text-slate-500 rounded-lg hover:bg-slate-50 transition-colors"
+                className="mt-2 p-1 cursor-grab active:cursor-grabbing text-slate-300 hover:text-slate-500 rounded-lg hover:bg-slate-50 transition-colors"
                 title="Arrastrar para reordenar"
                 style={{ touchAction: 'none' }}
             >
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="5" r="1" /><circle cx="9" cy="12" r="1" /><circle cx="9" cy="19" r="1" /><circle cx="15" cy="5" r="1" /><circle cx="15" cy="12" r="1" /><circle cx="15" cy="19" r="1" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="5" r="1" /><circle cx="9" cy="12" r="1" /><circle cx="9" cy="19" r="1" /><circle cx="15" cy="5" r="1" /><circle cx="15" cy="12" r="1" /><circle cx="15" cy="19" r="1" /></svg>
             </div>
 
             <div className="flex-1 min-w-0 flex flex-col gap-1">
@@ -93,13 +97,23 @@ function SortableItem({
                     onChange={(e) => updateLine(index, 'c', e.target.value)}
                     className="input monospace-input text-blue-600 font-bold !py-1 !px-2 !h-auto border-dashed border-blue-200 w-full"
                 />
-                <input
-                    type="text"
-                    value={line.l}
-                    placeholder="Letra"
-                    onChange={(e) => updateLine(index, 'l', e.target.value)}
-                    className="input monospace-input !py-1 !px-2 !h-auto w-full"
-                />
+                <div className="flex gap-1 items-center">
+                    <button
+                        type="button"
+                        onClick={() => toggleBold(index)}
+                        className={`shrink-0 w-6 h-6 flex items-center justify-center rounded text-[10px] font-black border transition-colors ${isBold ? 'bg-blue-600 text-white border-blue-600' : 'bg-slate-100 text-slate-500 border-slate-300 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300'}`}
+                        title={isBold ? 'Quitar estribillo' : 'Marcar como estribillo'}
+                    >
+                        E
+                    </button>
+                    <input
+                        type="text"
+                        value={line.l}
+                        placeholder="Letra"
+                        onChange={(e) => updateLine(index, 'l', e.target.value)}
+                        className={`input monospace-input !py-1 !px-2 !h-auto w-full ${isBold ? 'font-bold text-primary' : ''}`}
+                    />
+                </div>
             </div>
 
             <div className="line-controls">
@@ -258,6 +272,16 @@ export default function ChordLyricEditor({ initialValue, value, name, onDirtyCha
         setLines(arrayMove(lines, index, targetIndex));
     };
 
+    const toggleBold = (index: number) => {
+        const line = lines[index];
+        const trimmed = line.l.trim();
+        const isBold = /^\*.*\*$/.test(trimmed);
+        const newValue = isBold
+            ? trimmed.slice(1, -1)
+            : `*${line.l}*`;
+        updateLine(index, 'l', newValue);
+    };
+
     return (
         <div className="flex flex-col gap-4">
             <DndContext
@@ -269,7 +293,7 @@ export default function ChordLyricEditor({ initialValue, value, name, onDirtyCha
                     items={lines.map(l => l.id)}
                     strategy={verticalListSortingStrategy}
                 >
-                    <div className="flex flex-col gap-6">
+                    <div className="flex flex-col gap-2">
                         {lines.map((line, index) => (
                             <SortableItem
                                 key={line.id}
@@ -279,6 +303,7 @@ export default function ChordLyricEditor({ initialValue, value, name, onDirtyCha
                                 updateLine={updateLine}
                                 removeLine={removeLine}
                                 moveLine={moveLine}
+                                toggleBold={toggleBold}
                                 isFirst={index === 0}
                                 isLast={index === lines.length - 1}
                             />

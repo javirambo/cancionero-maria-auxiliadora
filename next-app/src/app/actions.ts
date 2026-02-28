@@ -19,45 +19,75 @@ function normalizeText(text: string): string {
 }
 
 export async function processSongImage(base64Image: string) {
-    if (!GEMINI_API_KEY) {
-        throw new Error('GEMINI_API_KEY no está configurada.');
+    // Re-check API key directly from process.env to ensure it's loaded
+    const apiKey = process.env.GEMINI_API_KEY || GEMINI_API_KEY;
+
+    if (!apiKey) {
+        throw new Error('GEMINI_API_KEY no está configurada en las variables de entorno.');
     }
 
-    const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({
+        model: "gemini-2.5-flash",
+        generationConfig: { responseMimeType: "application/json" }
+    });
 
-    const prompt = `Extrae el título, el autor (si existe), la letra y los acordes de esta imagen. 
-    Devuelve un JSON estrictamente con este formato:
+    const prompt = `Extrae el título, el autor (si existe), la letra y los acordes de esta imagen de una canción o partitura. 
+    Debes devolver un JSON con esta estructura:
     {
         "titulo": "...",
         "autor": "...",
         "letra": [
-            { "c": "Acordes aligned with spaces", "l": "Letra de la línea" },
+            { "c": "Acordes alineados con espacios", "l": "Letra de la línea" },
             ...
         ]
     }
-    Si una línea no tiene acordes, usa "". Si no encuentras el título o autor, usa "".
-    Responde ÚNICAMENTE con el objeto JSON. No añadas explicaciones ni bloques de código.`;
+    Instrucciones importantes:
+    1. Si una línea no tiene acordes, usa "".
+    2. Si no encuentras el título, usa "".
+    3. Si no encuentras el autor busca en internet o usa "".
+    4. Los acordes en "c" deben contener espacios para que queden sobre la letra en "l" correctamente.
+    5. Los acordes colocarlos en mayusculas las notas y los extras en minuscula, ejemplo LAm7.
+    6. Responde exclusivamente con el JSON.
+    7. Busca la misma cancion en youtube y sugiere el link tambien`;
 
     try {
+        // More robust base64 cleaning
+        const base64Data = base64Image.includes('base64,')
+            ? base64Image.split('base64,')[1]
+            : base64Image;
+
         const result = await model.generateContent([
-            prompt,
+            { text: prompt },
             {
                 inlineData: {
-                    data: (base64Image.includes(',') ? base64Image.split(',')[1] : base64Image),
+                    data: base64Data,
                     mimeType: "image/jpeg"
                 }
             }
         ]);
 
-        const text = result.response.text();
-        // Remove markdown formatting if present
-        const cleanedText = text.replace(/```json|```/g, '').trim();
-        const data = JSON.parse(cleanedText);
-        return data;
-    } catch (error) {
-        console.error('Error processing image with Gemini:', error);
-        throw new Error('No se pudo procesar la imagen. Inténtalo de nuevo.');
+        const responseText = result.response.text();
+        console.log('Gemini response received.');
+
+        try {
+            return JSON.parse(responseText);
+        } catch (parseError) {
+            const cleanedText = responseText.replace(/```json|```/g, '').trim();
+            return JSON.parse(cleanedText);
+        }
+    } catch (error: any) {
+        console.error('DETAILED GEMINI ERROR:', error);
+        const detail = error.message || 'Error desconocido';
+
+        if (detail.includes('API key not found')) {
+            throw new Error('La clave de API no está siendo leída correctamente por el servidor.');
+        }
+        if (detail.includes('invalid')) {
+            throw new Error('La clave de API de Gemini parece no ser válida o está mal escrita.');
+        }
+
+        throw new Error('Error al procesar: ' + detail.substring(0, 150));
     }
 }
 
