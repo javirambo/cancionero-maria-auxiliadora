@@ -5,8 +5,10 @@ import { type Cancion } from '@prisma/client';
 import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const PASSWORD = process.env.ADMIN_PASSWORD || 'Coro2021';
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
 
 // Normalize text by removing accents for search comparison
 function normalizeText(text: string): string {
@@ -14,6 +16,49 @@ function normalizeText(text: string): string {
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
         .toLowerCase();
+}
+
+export async function processSongImage(base64Image: string) {
+    if (!GEMINI_API_KEY) {
+        throw new Error('GEMINI_API_KEY no está configurada.');
+    }
+
+    const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    const prompt = `Extrae el título, el autor (si existe), la letra y los acordes de esta imagen. 
+    Devuelve un JSON estrictamente con este formato:
+    {
+        "titulo": "...",
+        "autor": "...",
+        "letra": [
+            { "c": "Acordes aligned with spaces", "l": "Letra de la línea" },
+            ...
+        ]
+    }
+    Si una línea no tiene acordes, usa "". Si no encuentras el título o autor, usa "".
+    Responde ÚNICAMENTE con el objeto JSON. No añadas explicaciones ni bloques de código.`;
+
+    try {
+        const result = await model.generateContent([
+            prompt,
+            {
+                inlineData: {
+                    data: (base64Image.includes(',') ? base64Image.split(',')[1] : base64Image),
+                    mimeType: "image/jpeg"
+                }
+            }
+        ]);
+
+        const text = result.response.text();
+        // Remove markdown formatting if present
+        const cleanedText = text.replace(/```json|```/g, '').trim();
+        const data = JSON.parse(cleanedText);
+        return data;
+    } catch (error) {
+        console.error('Error processing image with Gemini:', error);
+        throw new Error('No se pudo procesar la imagen. Inténtalo de nuevo.');
+    }
 }
 
 export async function getSongs(query: string = '', category: string = '') {

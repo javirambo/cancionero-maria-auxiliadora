@@ -44,8 +44,12 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
     
     libsql://cancionero-javirambo.aws-us-east-2.turso.io
     
-    token
+    obtener el token en: https://turso.io/console/tokens
+    
+    y colocalo en .env
 
-    eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3Njc4NzYyOTQsImlkIjoiZWE0MjY1ZGYtM2EyMS00YWU2LWE0NmEtMTcyZGUyYmQ5MzM2IiwicmlkIjoiOTViODgyNDctN2U5Ni00MjY2LWFmMGEtNTZjYzJlM2EwYzQ0In0.H1OYUHo_FoN8xAC5WquPGBHaLWGfEmnPPRV9Elt6h4zl14BJ08F_yGxdNHozoQ6u5OJc9xzkL-futO8dLCF3DQ
+## obtener la clave de gemini en: https://aistudio.google.com/app/api-keys
 
+    y agrega en .env
 
+    GEMINI_API_KEY=tu_clave_aqui

@@ -28,6 +28,7 @@ interface Line {
 
 interface ChordLyricEditorProps {
     initialValue?: string;
+    value?: string;
     name: string;
     onDirtyChange?: (isDirty: boolean) => void;
 }
@@ -133,11 +134,12 @@ function SortableItem({
     );
 }
 
-export default function ChordLyricEditor({ initialValue, name, onDirtyChange }: ChordLyricEditorProps) {
+export default function ChordLyricEditor({ initialValue, value, name, onDirtyChange }: ChordLyricEditorProps) {
     const [lines, setLines] = useState<Line[]>(() => {
-        if (initialValue) {
+        const val = value || initialValue;
+        if (val) {
             try {
-                const parsed = JSON.parse(initialValue);
+                const parsed = JSON.parse(val);
                 if (Array.isArray(parsed)) {
                     // Ensure each line has a unique ID
                     return parsed.map((l: any, i: number) => ({
@@ -146,11 +148,28 @@ export default function ChordLyricEditor({ initialValue, name, onDirtyChange }: 
                     }));
                 }
             } catch (e) {
-                return [{ id: 'line-0', c: '', l: initialValue }];
+                return [{ id: 'line-0', c: '', l: val }];
             }
         }
         return [{ id: 'line-0', c: '', l: '' }];
     });
+
+    // Update lines when value prop changes
+    useEffect(() => {
+        if (value) {
+            try {
+                const parsed = JSON.parse(value);
+                if (Array.isArray(parsed)) {
+                    setLines(parsed.map((l: any, i: number) => ({
+                        ...l,
+                        id: l.id || `line-${i}-${Date.now()}`
+                    })));
+                }
+            } catch (e) {
+                setLines([{ id: `line-${Date.now()}`, c: '', l: value }]);
+            }
+        }
+    }, [value]);
 
     const [isDirty, setIsDirty] = useState(false);
 
@@ -158,12 +177,13 @@ export default function ChordLyricEditor({ initialValue, name, onDirtyChange }: 
     useEffect(() => {
         const currentData = JSON.stringify(lines.map(({ id, ...rest }) => rest));
         let initialData = '[]';
-        if (initialValue) {
+        const compareValue = value || initialValue;
+        if (compareValue) {
             try {
-                const parsed = JSON.parse(initialValue);
+                const parsed = JSON.parse(compareValue);
                 initialData = JSON.stringify(parsed);
             } catch (e) {
-                initialData = JSON.stringify([{ c: '', l: initialValue }]);
+                initialData = JSON.stringify([{ c: '', l: compareValue }]);
             }
         } else {
             initialData = JSON.stringify([{ c: '', l: '' }]);
@@ -172,7 +192,7 @@ export default function ChordLyricEditor({ initialValue, name, onDirtyChange }: 
         const dirty = currentData !== initialData;
         setIsDirty(dirty);
         if (onDirtyChange) onDirtyChange(dirty);
-    }, [lines, initialValue, onDirtyChange]);
+    }, [lines, initialValue, value, onDirtyChange]);
 
     // Warn before closing tab if dirty
     useEffect(() => {
