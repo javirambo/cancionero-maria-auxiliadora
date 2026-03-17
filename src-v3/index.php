@@ -1,22 +1,88 @@
-<?php
-require_once 'i-start.php';
-inicio("Cancionero María Auxiliadora");
-
-$canciones = json_decode(file_get_contents(__DIR__ . '/canciones.json'), true);
-?>
-<div class="container text-center">
-  <nav class="sticky-a">
-    <form class="justify-content-center" action="cancion.php" method="get">
-      <input type="text" class="form-control" name="n" placeholder="Busque por Número, nombre, letra">
-      <button type="submit" class="btn btn-success mt-2">Buscar</button>
-    </form>
-  </nav>
-  <div class="indice">
-    <div style="display: inline-block; text-align: left;">
-      <?php foreach ($canciones as $c): ?>
-        <p><?php echo $c['numero'] . '. <a href="cancion.php?n=' . $c['numero'] . '">' . htmlspecialchars($c['titulo']) . '</a>' ?></p>
-      <?php endforeach; ?>
-    </div>
-  </div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1a6bbf">
+  <title>Cancionero María Auxiliadora</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="def.css">
+</head>
+<body>
+<div class="c4">
+  <h1 style="color: #1a6bbf; text-align: center; padding: 12px 0 8px 0;">Cancionero María Auxiliadora</h1>
 </div>
-<?php require_once 'i-end.php'; ?>
+
+<?php
+$canciones = json_decode(file_get_contents(__DIR__ . '/canciones.json'), true);
+
+function boldizar($texto) {
+    $texto = preg_replace('/\*([^*]+)\*/', '<b>$1</b>', $texto);
+    return nl2br($texto);
+}
+
+$n = $_REQUEST['n'] ?? '';
+
+if ($n !== '') {
+    // Vista de canción o resultados de búsqueda
+    if (is_numeric($n)) {
+        $cancion = null;
+        foreach ($canciones as $c) {
+            if ($c['numero'] == (int)$n) { $cancion = $c; break; }
+        }
+        if (!$cancion) {
+            echo '<div class="container"><p>Canción no encontrada.</p></div>';
+        } else {
+            echo '<div class="container">';
+            echo '<h3>' . $cancion['numero'] . '. ' . htmlspecialchars($cancion['titulo']) . '</h3>';
+            echo '<p>' . boldizar($cancion['letra']) . '</p>';
+            echo '</div>';
+        }
+    } else {
+        $busqueda = $n;
+        $resultados = array_filter($canciones, function($c) use ($busqueda) {
+            return mb_stripos($c['titulo'], $busqueda) !== false || mb_stripos($c['letra'], $busqueda) !== false;
+        });
+        echo '<div class="container">';
+        if (empty($resultados)) {
+            echo '<p>NO EXISTEN RESULTADOS</p>';
+        } else {
+            foreach ($resultados as $c) {
+                echo '<b>' . $c['numero'] . ' - ' . htmlspecialchars($c['titulo']) . '</b><br>';
+                echo '<small>' . htmlspecialchars(mb_substr($c['letra'], 0, 200)) . '...</small>';
+                echo '<br><a class="btn btn-sm btn-outline-primary mb-2 mt-1" href="?n=' . $c['numero'] . '">Ver letra</a>';
+                echo '<hr>';
+            }
+        }
+        echo '</div>';
+    }
+    echo '<nav class="sticky-b text-center"><a class="btn btn-warning btn-ssm" href="index.php" role="button">Volver</a></nav>';
+
+} else {
+    // Vista principal: buscador + listado
+    ?>
+    <div class="container text-center">
+      <nav class="sticky-a">
+        <form action="index.php" method="get">
+          <input type="text" class="form-control" name="n" placeholder="Busque por Número, nombre, letra">
+          <button type="submit" class="btn btn-success mt-2">Buscar</button>
+        </form>
+      </nav>
+      <div class="indice">
+        <div style="display: inline-block; text-align: left;">
+          <?php foreach ($canciones as $c): ?>
+            <p><?php echo $c['numero'] . '. <a href="?n=' . $c['numero'] . '">' . htmlspecialchars($c['titulo']) . '</a>' ?></p>
+          <?php endforeach; ?>
+        </div>
+      </div>
+    </div>
+    <?php
+}
+?>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+  }
+</script>
+</body></html>
