@@ -10,8 +10,24 @@
   <link rel="stylesheet" href="def.css">
 </head>
 <body>
-<div class="c4">
-  <h1 style="color: #1a6bbf; text-align: center; padding: 12px 0 8px 0;">Cancionero María Auxiliadora</h1>
+<div class="c4" style="position: relative;">
+  <a href="index.php" style="text-decoration: none;"><h1 style="color: #1a6bbf; text-align: center; padding: 12px 0 8px 0;">Cancionero María Auxiliadora</h1></a>
+  <button onclick="document.getElementById('menu-instalar').classList.toggle('d-none')"
+          style="position: absolute; top: 12px; right: 8px; background: none; border: none; font-size: 1.5rem; cursor: pointer;">&#9776;</button>
+</div>
+
+<div id="menu-instalar" class="d-none" style="background: #f0f6ff; border: 1px solid #c0d8f0; border-radius: 6px; margin: 8px; padding: 16px;">
+  <h5 style="color: #1a6bbf;">&#128242; Instalar en tu celular</h5>
+  <p><strong>Android (Chrome):</strong><br>
+    Tocá el menú ⋮ → <em>"Instalar app"</em> o <em>"Agregar a pantalla de inicio"</em>
+  </p>
+  <p><strong>iPhone / iPad (Safari):</strong><br>
+    Tocá el botón compartir ↑ → <em>"Añadir a pantalla de inicio"</em><br>
+    <small style="color:#888;">⚠️ Debe usarse Safari, no Chrome</small>
+  </p>
+  <p style="margin-bottom:0;"><strong>PC / Mac (Chrome):</strong><br>
+    Hacé clic en el ícono ⊕ que aparece en la barra de direcciones
+  </p>
 </div>
 
 <?php
