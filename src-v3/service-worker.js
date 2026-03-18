@@ -1,4 +1,4 @@
-const CACHE = 'cancionero-v1';
+const CACHE = 'cancionero-v2';
 const ARCHIVOS = ['index.php', 'def.css', 'canciones.json'];
 
 self.addEventListener('install', e => {
