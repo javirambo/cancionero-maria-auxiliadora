@@ -20,12 +20,31 @@ Incluye buscador, letras, acordes y herramientas para uso litúrgico o personal.
 3. Editar `config.php` con tus parámetros de conexión a base de datos.
 4. Abrir el proyecto en el navegador.
 
-## Nueva APP en Next.js !
+## Version 1
+
+La original: permite editar online.
+
+## Version 1.1
+
+Perimte editar canciones.
+
+Se puede instalar en un celular como PWA.
+
+## Version 2
+
+*Nueva APP en Next.js*
 
 Con la ayuda de Antigravity se ha migrado la aplicación de PHP a Next.js !
 
 La base de datos está alojada en TURSO y es sqlite.
 
+## Version 3
+
+En la carpeta src-v3 esta la version sin base de datos (todo en los php)
+
+Permite instalarla en el celu directamente asi no usamos conexion a internet.
+
+Inconveniente: no se actualizan las canciones!
 
 ## Licencia
 
