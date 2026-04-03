@@ -20,7 +20,7 @@ if(is_numeric($_REQUEST['n'])){
     echo "NO EXISTEN RESULTADOS";
   else{
     logSql("", $result);
-    echo '<div class="container">';
+    echo '<div class="container" style="margin-top:30px">';
     foreach ($result as $cancion) {
       echo '<a href="cancion.php?n='.$cancion["numero"].'"><b>'.$cancion["numero"].' - '.$cancion["titulo"].'</b></a><br>';
       echo '<small>'.$cancion["letra"].'</small>';

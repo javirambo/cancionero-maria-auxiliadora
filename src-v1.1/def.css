@@ -39,19 +39,32 @@
 }
 
 .hamb-menu a {
-  padding: 10px 16px;
+  padding: 8px 14px;
+  margin: 3px 6px;
   text-decoration: none;
-  color: #333;
+  color: #856404;
   font-size: 15px;
-  border-bottom: 1px solid #eee;
-}
-
-.hamb-menu a:last-child {
-  border-bottom: none;
+  border-radius: 8px;
+  background: #fff3cd;
 }
 
 .hamb-menu a:hover {
   background: #f0f0f0;
+}
+
+.hamb-green {
+  background: #28a745 !important;
+  color: #fff !important;
+}
+
+.hamb-red {
+  background: #dc3545 !important;
+  color: #fff !important;
+}
+
+.hamb-gray {
+  background: #6c757d !important;
+  color: #fff !important;
 }
 
 .hamb-sep {
@@ -59,10 +72,15 @@
   border-top: 2px solid #ccc;
 }
 
+.hamb-grupo {
+  background: #007bff !important;
+  color: #fff !important;
+}
+
 .hamb-todas {
   font-weight: bold;
   color: #856404 !important;
-  background: #fff3cd;
+  background: #fff3cd !important;
 }
 
 .w1 {
