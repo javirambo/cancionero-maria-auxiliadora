@@ -16,7 +16,15 @@ try {
 // --------------------------------------------------------------------
 function logSql($title, $sql)
 {
-    echo "\n\n<!-- ${title}" . $sql . "\n-->\n\n";
+    if (empty($_SESSION["login"])) return;
+    echo <<<HTML
+
+
+<!-- {$title} {$sql}
+-->
+
+
+HTML;
 }
 
 // --------------------------------------------------------------------
@@ -96,7 +104,7 @@ function buscarCancionPorTexto($text)
         $tituloExpr = "REPLACE($tituloExpr, '$ent', '$char')";
         $letraExpr = "REPLACE($letraExpr, '$ent', '$char')";
     }
-    $sql = "SELECT numero,titulo,letra FROM Canciones WHERE $tituloExpr LIKE '%${text}%' OR $letraExpr LIKE '%${text}%'";
+    $sql = "SELECT numero,titulo,letra FROM Canciones WHERE $tituloExpr LIKE '%$text%' OR $letraExpr LIKE '%$text%'";
     logSql("canciones1:", $sql);
 
     $canciones = array();
@@ -109,6 +117,24 @@ function buscarCancionPorTexto($text)
         array_push($canciones, $cancion);
     }
     return $canciones;
+}
+//--------------------------------------------------------------------
+// titulo personalizado del domingo:
+function getTituloDomingo() {
+  global $conn;
+  $sql = "SELECT Valor FROM Configuraciones WHERE Clave='domingo_titulo'";
+  $titulo = "Misa de hoy";
+  foreach ($conn->query($sql) as $row)
+    $titulo = $row['Valor'];
+  return $titulo;
+}
+//--------------------------------------------------------------------
+function setTituloDomingo($titulo) {
+  global $conn;
+  $titulo = trim($titulo);
+  if ($titulo === '') $titulo = 'Misa de hoy';
+  $sql = "REPLACE Configuraciones SET Clave='domingo_titulo', Valor='" . addslashes($titulo) . "'";
+  $conn->query($sql);
 }
 //--------------------------------------------------------------------
 // lista de canciones del domingo:

@@ -6,6 +6,10 @@ require_once 'dbconnection.php';
 require_once 'i-start.php';
 inicio("Cancionero de Domingo");
 
+//--guardar titulo editado:
+if (!empty($_GET['titulo']) && $validUser)
+  setTituloDomingo($_GET['titulo']);
+
 //--el form envia para guardar la lista:
 if (!empty($_GET['add']))
   addCancionDomingo($_GET['add']);
@@ -16,9 +20,34 @@ if (!empty($_GET['del']))
 
 // busco las canciones del domingo:
 $lista = getListaDomingo();
+$tituloDomingo = getTituloDomingo();
 print '<div class="container">';
 ?>
-<h3 class="dom">Domingo</h3>
+<h3 class="dom">
+  <span id="domingoTitulo"><?php echo htmlspecialchars($tituloDomingo); ?></span>
+  <?php if ($validUser) { ?>
+    <span id="editBtn" onclick="editarTitulo()" style="cursor:pointer;margin-left:8px;font-size:0.7em;">&#9998;</span>
+    <form id="tituloForm" action="domingo.php" method="get" style="display:none;margin-top:5px;">
+      <div style="display:flex;gap:5px;align-items:center;">
+        <input class="form-control" type="text" name="titulo" value="<?php echo htmlspecialchars($tituloDomingo); ?>" style="flex:1;">
+        <button type="submit" class="btn btn-success btn-sm">OK</button>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="cancelarEdicion()">X</button>
+      </div>
+    </form>
+  <?php } ?>
+</h3>
+<script>
+function editarTitulo() {
+  document.getElementById('domingoTitulo').style.display = 'none';
+  document.getElementById('editBtn').style.display = 'none';
+  document.getElementById('tituloForm').style.display = 'block';
+}
+function cancelarEdicion() {
+  document.getElementById('domingoTitulo').style.display = '';
+  document.getElementById('editBtn').style.display = '';
+  document.getElementById('tituloForm').style.display = 'none';
+}
+</script>
 <div class="c1">
   <?php
   foreach ($lista as $nro) {

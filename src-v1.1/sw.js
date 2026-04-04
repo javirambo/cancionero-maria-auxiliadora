@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cancionero-v1.1.3';
+const CACHE_NAME = 'cancionero-v1.1.4';
 const ASSETS = [
   './',
   'index.php',

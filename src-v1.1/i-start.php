@@ -8,7 +8,7 @@ print '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3
   <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="def.css?v=2">
+  <link rel="stylesheet" href="def.css?v=4">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon-192.png">
   <meta name="theme-color" content="#1a6bbf">
@@ -19,15 +19,15 @@ if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
 }
 </script>
-<div class="c4">
-  <a href="index.php"><img src="cancionero2.png" style="width: 100%"></a>
+<div class="c4'.($nroCancion !== null ? ' c4-mini' : '').'">
+  <a href="index.php"><img src="'.($nroCancion !== null ? 'cancionero-xs.png' : 'cancionero2.png').'" style="width: 100%"></a>
 </div>
-<div class="menu-wrap">
+<div class="menu-wrap'.($nroCancion !== null ? ' menu-wrap-mini' : '').'">
   <button class="hamburger-btn" onclick="document.getElementById(\'hambMenu\').classList.toggle(\'open\')">&#9776;</button>
   <div id="hambMenu" class="hamb-menu">';
 
 global $validUser;
-print '<a href="domingo.php" class="hamb-green">Misa de hoy</a>';
+print '<a href="domingo.php" class="hamb-green">'.htmlspecialchars(getTituloDomingo()).'</a>';
 if ($validUser) {
     print '<a href="nueva.php">Nueva canción</a>';
     if ($nroCancion !== null) {

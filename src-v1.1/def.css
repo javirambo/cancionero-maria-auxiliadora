@@ -2,11 +2,25 @@
   padding: 1px 5px 0 5px;
 }
 
+.c4-mini {
+  display: flex;
+  align-items: center;
+}
+
+.c4-mini img {
+  width: 75% !important;
+  height: auto;
+}
+
 .menu-wrap {
   position: fixed;
   top: 8px;
   right: 8px;
   z-index: 1000;
+}
+
+.menu-wrap-mini {
+  top: 4px;
 }
 
 .hamburger-btn {
@@ -50,6 +64,12 @@
 
 .hamb-menu a:hover {
   background: #f0f0f0;
+}
+
+.hamb-buscar {
+  background: #17a2b8 !important;
+  color: #fff !important;
+  font-weight: bold;
 }
 
 .hamb-green {
