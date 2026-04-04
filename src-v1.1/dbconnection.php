@@ -137,6 +137,13 @@ function setTituloDomingo($titulo) {
   $conn->query($sql);
 }
 //--------------------------------------------------------------------
+function setOrdenDomingo($orden) {
+  global $conn;
+  $str = trim($orden);
+  $sql = "REPLACE Configuraciones SET Clave='domingo', Valor='" . addslashes($str) . "'";
+  $conn->query($sql);
+}
+//--------------------------------------------------------------------
 // lista de canciones del domingo:
 function getListaDomingo() {
   global $conn;

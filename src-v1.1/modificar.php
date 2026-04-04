@@ -26,7 +26,16 @@ print '<div class="container">';
     </div>
     <div class="form-group fm">
       <label for="grupo">Tipo de canción</label>
-      <input type="text" class="form-control" id="grupo" name="grupo" value="<?php echo $cancion['grupo'] ?>">
+      <input type="text" class="form-control" id="grupo" name="grupo" list="listaGrupos" value="<?php echo $cancion['grupo'] ?>">
+      <datalist id="listaGrupos">
+        <?php
+        global $conn;
+        $sqlGrupos = 'SELECT grupo FROM Canciones GROUP BY grupo ORDER BY grupo';
+        foreach ($conn->query($sqlGrupos) as $row) {
+          echo '<option value="' . htmlspecialchars($row["grupo"]) . '">';
+        }
+        ?>
+      </datalist>
     </div>
     <div class="form-group fm">
       <label for="letra">Letra</label>

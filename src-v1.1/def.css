@@ -132,11 +132,43 @@
   border-radius: 0.2rem;
 }
 
+.dom-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.drag-handle {
+  cursor: grab;
+  color: #aaa;
+  font-size: 18px;
+  padding: 0 4px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.dom-item-placeholder {
+  height: 40px;
+  border: 2px dashed #007bff;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
 .borrar {
-  padding: 0;
-  width: 20px;
-  height: 20px;
-  position: absolute;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  opacity: 0.6;
+}
+
+.borrar:hover {
+  opacity: 1;
 }
 
 .subtit {
@@ -178,15 +210,17 @@ h3 {
   flex: 1;
 }
 
+.f1 form {
+  display: flex;
+  gap: 4px;
+}
+
 .f1 input {
-  width: 80%;
-  float: left;
+  flex: 1;
 }
 
 .f1 button {
-  float: left;
-  width: 15%;
-  margin: 4px;
+  margin: 0;
 }
 
 .ok {

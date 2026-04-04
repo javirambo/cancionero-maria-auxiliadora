@@ -13,7 +13,7 @@ if(is_numeric($_REQUEST['n'])){
   $result = buscarCancion($_REQUEST['n']);
   inicio("Cancionero", $result['numero']);
 }else{
-  inicio("Cancionero");
+  inicio("Cancionero", 0);
   // es un texto a buscar:
   $result = buscarCancionPorTexto($_REQUEST['n']);
   if(empty($result))
@@ -31,6 +31,9 @@ if(is_numeric($_REQUEST['n'])){
   die;
 }
 print '<div class="container">';
+if (!empty($_GET['saved'])) {
+  echo '<div class="alert alert-success" role="alert">Canción ' . $result['numero'] . ' modificada correctamente!</div>';
+}
 ?>
 <h3><?php echo $result['numero'] . '. ' . $result['titulo'] ?></h3>
 <?php if(!empty($result['extras'] && $validUser)){
