@@ -175,12 +175,8 @@ function cancelarEdicion() {
 })();
 </script>
 <?php } ?>
-<br>
-<br>
-<br>
-<br>
-<div class="btnctr"><a class="btn btn-warning" href="index.php" role="button">Volver</a></div>
 </div>
 <?php
+require_once 'buscar.php';
 print '</div>';
 require_once 'i-end.php';

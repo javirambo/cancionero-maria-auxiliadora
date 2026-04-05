@@ -123,6 +123,10 @@
 	position: sticky;
 	bottom: 0;
 	padding: 8px;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	flex-wrap: wrap;
 }
 
 .btn-ssm {
@@ -208,6 +212,14 @@ h3 {
 
 .buscar-form input {
   flex: 1;
+}
+
+.buscar-bar {
+  z-index: 100;
+}
+
+.buscar-inline {
+  margin-left: auto;
 }
 
 .f1 form {

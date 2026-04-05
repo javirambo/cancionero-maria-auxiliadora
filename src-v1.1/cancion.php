@@ -28,6 +28,8 @@ if(is_numeric($_REQUEST['n'])){
     }
     echo '</div>';
   }
+  require_once 'buscar.php';
+  require_once 'i-end.php';
   die;
 }
 print '<div class="container">';
@@ -40,13 +42,7 @@ if (!empty($_GET['saved'])) {
   print '<h5 class="extras">' . $result['extras'] . '</h5>';
 }?>
 <p><?php echo $result['letra'] ?></p>
-<?php
-// donde lleva el boton "volver"?
-$url = $_REQUEST['d'] == '1' ? 'domingo.php' : 'index.php';
-?>
-<nav class="sticky-b">
-  <a class="btn btn-warning btn-ssm" href="<?php echo $url ?>" role="button">Volver</a>
-</nav>
+<?php require_once 'buscar.php'; ?>
 <?php
 print '</div>';
 require_once 'i-end.php';
