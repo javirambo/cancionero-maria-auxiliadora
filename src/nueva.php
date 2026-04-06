@@ -27,26 +27,14 @@ print '<div class="container">';
     </div>
     <div class="form-group fm">
       <label for="grupo">Tipo de canción</label>
-      <select class="form-control" id="grupo" name="grupo">
-        <option>OTROS</option>
-        <option>ENTRADA</option>
-        <option>PERDON</option>
-        <option>GLORIA</option>
-        <option>ALELUYA</option>
-        <option>OFRENDAS</option>
-        <option>SANTO</option>
-        <option>COMUNION</option>
-        <option>ACCION DE GRACIAS / ADORACION</option>
-        <option>DESPEDIDA</option>
-        <option>MARIA</option>
-        <option>SALMOS Y CANTICOS</option>
-        <option>ADVIENTO</option>
-        <option>NAVIDAD</option>
-        <option>CUARESMA</option>
-        <option>PASCUA</option>
-        <option>ESPIRITU SANTO</option>
-        <option>ALABANZA / ANIMACION</option>
-      </select>
+      <input type="text" class="form-control" id="grupo" name="grupo" list="listaGrupos" placeholder="Coloque el tipo">
+      <datalist id="listaGrupos">
+        <?php
+        foreach (getGrupos() as $g) {
+          echo '<option value="' . htmlspecialchars($g) . '">';
+        }
+        ?>
+      </datalist>
     </div>
     <div class="form-group fm">
       <label for="letra">Letra</label>

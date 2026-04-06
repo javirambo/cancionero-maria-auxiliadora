@@ -26,9 +26,19 @@ La original: permite editar online.
 
 ## Version 1.1
 
-Perimte editar canciones.
+Permite editar canciones.
 
 Se puede instalar en un celular como PWA.
+
+## Version 1.2
+
+Avance de la version 1.0 con mejoras de usabilidad:
+
+- Ajustes en botones y menus para un uso mas intuitivo.
+- Funcionamiento mas facil y rapido.
+- Mejoras en la navegacion mobile.
+
+Carpeta: `src/`
 
 ## Version 2
 
