@@ -1,88 +1,67 @@
-# Cancionero de Música Católica
+# Cancionero María Auxiliadora
 
-Este proyecto es un sitio web público que recopila y organiza canciones de música católica.  
-Incluye buscador, letras, acordes y herramientas para uso litúrgico o personal.
+Sitio web para buscar, ver y gestionar canciones de música católica para uso litúrgico.  
+Adaptado para dispositivos móviles.
 
 ## Características
 
-- Listado y búsqueda de canciones por título, autor o tema.
-- Visualización adaptada para dispositivos móviles.
-- Implementación en **PHP** (backend) y **JavaScript** (frontend).
-- Diseño simple y orientado a la comunidad.
+- Listado y búsqueda de canciones por título, texto o número.
+- Organización por categorías litúrgicas (Entrada, Comunión, María, etc.).
+- Playlist de domingo para organizar las canciones de la misa.
+- Visualización de letras con marcado de estribillos en negrita.
+- Sistema de login para administración (agregar, editar, eliminar canciones).
+- Diseño mobile-first con Bootstrap.
+
+## Tecnología
+
+- **PHP 8.0+** con HTML inline
+- **MySQL** (PDO)
+- **Bootstrap CSS**
+- Sesiones PHP para autenticación
+
+## Estructura
+
+```
+src/
+├── index.php          # Página principal con búsqueda e índice
+├── cancion.php        # Vista de canción individual
+├── buscar.php         # Búsqueda por número o texto
+├── domingo.php        # Gestión de playlist dominical
+├── nueva.php          # Formulario para nueva canción
+├── modificar.php      # Formulario para editar canción
+├── save.php           # Guardado de canciones
+├── eliminar.php       # Eliminación de canciones
+├── login.php          # Autenticación
+├── logout.php         # Cierre de sesión
+├── dbconfig.php       # Credenciales de base de datos
+├── dbconnection.php   # Conexión PDO y funciones utilitarias
+├── i-start.php        # Header HTML
+├── i-end.php          # Footer HTML
+├── bottom.php         # Barra inferior
+├── grupos.php         # Listado por categorías
+├── indice.php         # Índice de canciones
+├── backup.php         # Exportación de backup
+└── def.css            # Estilos
+```
 
 ## Instalación
 
 1. Clonar el repositorio:
    ```bash
-   git clone https://github.com/tuusuario/cancionero-catolico.git
+   git clone https://github.com/javierrambaldo/cancionero-maria-auxiliadora.git
    ```
-2. Configurar el entorno PHP (Apache o Nginx con PHP 8.0+).
-3. Editar `config.php` con tus parámetros de conexión a base de datos.
-4. Abrir el proyecto en el navegador.
-
-## Version 1
-
-La original: permite editar online.
-
-## Version 1.1
-
-Perimte editar canciones.
-
-Se puede instalar en un celular como PWA.
-
-## Version 2
-
-*Nueva APP en Next.js*
-
-Con la ayuda de Antigravity se ha migrado la aplicación de PHP a Next.js !
-
-La base de datos está alojada en TURSO y es sqlite.
-
-## Version 3
-
-En la carpeta src-v3 esta la version sin base de datos (todo en los php)
-
-Permite instalarla en el celu directamente asi no usamos conexion a internet.
-
-Inconveniente: no se actualizan las canciones!
+2. Importar la base de datos desde `backup/cancionero-completo.sql`.
+3. Configurar credenciales en `src/dbconfig.php`.
+4. Apuntar el servidor web (Apache/Nginx) al directorio `src/`.
+5. Asegurar charset UTF-8 en base de datos y PHP.
 
 ## Licencia
 
-El **código fuente** (PHP y JavaScript) de este proyecto se distribuye bajo la licencia **MIT**.
+El **código fuente** (PHP y JavaScript) se distribuye bajo la licencia **MIT**.
 
-```
-MIT License
-
-Copyright (c) 2025 Javier Rambaldo.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-> ⚠️ **Importante:** Las **letras, acordes y partituras** incluidas en este proyecto **no están cubiertas** por esta licencia MIT.  
-> Pertenecen a sus respectivos autores y editoriales. Su inclusión es únicamente con fines educativos o litúrgicos.
-
-## Contribuciones
-
-Las contribuciones son bienvenidas.  
-Podés enviar *pull requests* con mejoras o nuevas funcionalidades.  
-Antes de hacerlo, asegurate de que el código siga el formato y la estructura actual.
+> **Importante:** Las **letras y acordes** incluidos en este proyecto **no están cubiertos** por la licencia MIT.  
+> Pertenecen a sus respectivos autores y editoriales. Su inclusión es únicamente con fines litúrgicos.
 
 ---
 
-© 2025 Javier Rambaldo. Proyecto abierto y de acceso público.
+© 2025 Javier Rambaldo
