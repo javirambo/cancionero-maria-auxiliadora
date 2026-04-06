@@ -1,50 +1,93 @@
-# Cancionero de Música Católica
+# Cancionero Maria Auxiliadora
 
-Este proyecto es un sitio web público que recopila y organiza canciones de música católica.  
-Incluye buscador, letras, acordes y herramientas para uso litúrgico o personal.
+Cancionero liturgico con letras de canciones para la misa. Pensado para uso desde el celular.
 
-## Características
+## Caracteristicas
 
-- Listado y búsqueda de canciones por título, autor o tema.
-- Visualización adaptada para dispositivos móviles.
-- Implementación en **PHP** (backend) y **JavaScript** (frontend).
-- Diseño simple y orientado a la comunidad.
+- **Sin base de datos**: todas las canciones estan en un archivo JSON (`canciones.json`)
+- **PWA instalable**: se puede instalar en el celular como una app (Android, iPhone, PC)
+- **Funciona offline**: usa service worker para cachear los archivos y funcionar sin conexion
+- **Busqueda**: por numero, titulo o texto de la letra
+- **Mobile-first**: disenado para pantallas chicas con Bootstrap 4
 
-## Instalación
+## Estructura del proyecto
+
+```
+src/
+  index.php          # Pagina principal (buscador + listado + vista de cancion)
+  canciones.json     # Datos de todas las canciones (~427)
+  def.css            # Estilos
+  manifest.json      # Configuracion PWA
+  service-worker.js  # Cache offline
+  icon-192.png       # Icono PWA
+  icon-512.png       # Icono PWA
+backup/
+  cancionero-completo.sql   # Backup historico de la base MySQL
+  migrar_canciones-v3.py    # Script para regenerar canciones.json desde backup SQL
+```
+
+## Deploy en un servidor
+
+### Requisitos
+
+- Servidor web con PHP 8.0+ (Apache, Nginx, XAMPP, etc.)
+- No requiere base de datos ni credenciales
+
+### Pasos
 
 1. Clonar el repositorio:
    ```bash
-   git clone https://github.com/tuusuario/cancionero-catolico.git
+   git clone https://github.com/javierrambaldo/cancionero-maria-auxiliadora.git
    ```
-2. Configurar el entorno PHP (Apache o Nginx con PHP 8.0+).
-3. Editar `config.php` con tus parámetros de conexión a base de datos.
-4. Abrir el proyecto en el navegador.
+2. Apuntar el servidor web a la carpeta `src/`
+3. Abrir `index.php` en el navegador
 
-## Version 1
+### Ejemplo con Apache (XAMPP)
 
-La original: permite editar online.
+```bash
+# Copiar src/ al directorio de Apache
+cp -r src/ /opt/lampp/htdocs/cancionero/
+# Abrir http://localhost/cancionero/
+```
 
-## Version 1.1
+### Ejemplo con PHP built-in server (para testear rapido)
 
-Perimte editar canciones.
+```bash
+cd src/
+php -S localhost:8000
+# Abrir http://localhost:8000
+```
 
-Se puede instalar en un celular como PWA.
+## Testear en local
 
-## Version 2
+La forma mas rapida de probar el cancionero:
 
-*Nueva APP en Next.js*
+```bash
+cd src/
+php -S localhost:8000
+```
 
-Con la ayuda de Antigravity se ha migrado la aplicación de PHP a Next.js !
+Abrir http://localhost:8000 en el navegador. Funciona todo: busqueda, vista de canciones, etc.
 
-La base de datos está alojada en TURSO y es sqlite.
+> **Nota sobre PWA/offline:** El service worker solo funciona en HTTPS o en `localhost`. Si testeas con el servidor built-in de PHP en localhost, la PWA se registra correctamente.
 
-## Version 3
+## Regenerar canciones.json
 
-En la carpeta src-v3 esta la version sin base de datos (todo en los php)
+Si tenes un backup SQL nuevo y queres actualizar las canciones:
 
-Permite instalarla en el celu directamente asi no usamos conexion a internet.
+```bash
+cd backup/
+python3 migrar_canciones-v3.py
+```
 
-Inconveniente: no se actualizan las canciones!
+Esto genera `src/canciones.json` a partir del backup SQL.
+
+## Historial de versiones
+
+- **V1**: PHP + MySQL, permite editar online
+- **V1.1**: PHP + MySQL con PWA
+- **V2**: Next.js + Turso (SQLite)
+- **V3** (actual): PHP sin base de datos, todo en JSON, PWA offline
 
 ## Licencia
 
@@ -53,7 +96,7 @@ El **código fuente** (PHP y JavaScript) de este proyecto se distribuye bajo la 
 ```
 MIT License
 
-Copyright (c) 2025 Javier Rambaldo.
+Copyright (c) 2026 Javier Rambaldo.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -85,4 +128,4 @@ Antes de hacerlo, asegurate de que el código siga el formato y la estructura ac
 
 ---
 
-© 2025 Javier Rambaldo. Proyecto abierto y de acceso público.
+© 2026 Javier Rambaldo. Proyecto abierto y de acceso publico.
