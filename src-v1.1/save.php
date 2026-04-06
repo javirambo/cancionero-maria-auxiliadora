@@ -40,9 +40,8 @@ if (empty($titulo)) {
   $conn->query($sql);
 
   echo "<h2>Canción " . $_POST['numero'] . " guardada!</h2>";
-  echo '<p></p>';
-  echo '<p><a class="btn btn-primary" href="index.php" role="button">Volver</a></p>';
 }
 
 print '</div>';
+require_once 'buscar.php';
 require_once 'i-end.php';
