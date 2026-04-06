@@ -5,7 +5,7 @@ $validUser = $_SESSION["login"] === true;
 require_once 'dbconnection.php';
 require_once 'i-start.php';
 inicio("Modificar canción");
-if (!$validUser) die;
+if (!$validUser) { header("Location: login.php"); exit; }
 
 // busco la cancion:
 $cancion = buscarCancion($_REQUEST['n']);
@@ -18,28 +18,26 @@ print '<div class="container">';
   <form action="save.php" method="post">
     <div class="form-group fm">
       <label for="numero">Número</label>
-      <input class="form-control" type="number" id="numero" name="numero" value="<?php echo $cancion['numero'] ?>">
+      <input class="form-control" type="number" id="numero" name="numero" value="<?php echo htmlspecialchars($cancion['numero']) ?>">
     </div>
     <div class="form-group fm">
       <label for="titulo">Título de la canción</label>
-      <input type="text" class="form-control" id="titulo" name="titulo" value="<?php echo $cancion['titulo'] ?>">
+      <input type="text" class="form-control" id="titulo" name="titulo" value="<?php echo htmlspecialchars($cancion['titulo']) ?>">
     </div>
     <div class="form-group fm">
       <label for="grupo">Tipo de canción</label>
-      <input type="text" class="form-control" id="grupo" name="grupo" list="listaGrupos" value="<?php echo $cancion['grupo'] ?>">
+      <input type="text" class="form-control" id="grupo" name="grupo" list="listaGrupos" value="<?php echo htmlspecialchars($cancion['grupo']) ?>">
       <datalist id="listaGrupos">
         <?php
-        global $conn;
-        $sqlGrupos = 'SELECT grupo FROM Canciones GROUP BY grupo ORDER BY grupo';
-        foreach ($conn->query($sqlGrupos) as $row) {
-          echo '<option value="' . htmlspecialchars($row["grupo"]) . '">';
+        foreach (getGrupos() as $g) {
+          echo '<option value="' . htmlspecialchars($g) . '">';
         }
         ?>
       </datalist>
     </div>
     <div class="form-group fm">
       <label for="letra">Letra</label>
-      <textarea class="form-control" id="letra" name="letra" rows="18"><?php echo $cancion['letra'] ?></textarea>
+      <textarea class="form-control" id="letra" name="letra" rows="18"><?php echo htmlspecialchars($cancion['letra']) ?></textarea>
     </div>
     <input type="hidden" name="update" value="1">
     <nav class="sticky-b">

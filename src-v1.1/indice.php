@@ -7,14 +7,16 @@
 require_once 'dbconnection.php';
 
 // busco las canciones de un grupo (o todas)
-$sql = 'SELECT numero,titulo FROM Canciones';
-$grupo = $_REQUEST['g'];
-if (!empty($grupo))
-  $sql .= (" WHERE Grupo='" . $grupo . "'");
-logSql("cancion:", $sql);
+$grupo = isset($_GET['g']) ? $_GET['g'] : '';
+if (!empty($grupo)) {
+  $stmt = $conn->prepare('SELECT numero,titulo FROM Canciones WHERE Grupo = :grupo');
+  $stmt->execute([':grupo' => $grupo]);
+} else {
+  $stmt = $conn->query('SELECT numero,titulo FROM Canciones');
+}
 
 print '<div class="indice">';
-foreach ($conn->query($sql) as $row) {
-  print '<p>' . $row["numero"] . '. <a href="cancion.php?n='. $row["numero"] .'">' . $row["titulo"] . "</a></p>";
+foreach ($stmt as $row) {
+  print '<p>' . htmlspecialchars($row["numero"]) . '. <a href="cancion.php?n='. htmlspecialchars($row["numero"]) .'">' . htmlspecialchars($row["titulo"]) . "</a></p>";
 }
 print '</div>';

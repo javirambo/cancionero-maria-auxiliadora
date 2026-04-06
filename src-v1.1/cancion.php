@@ -19,10 +19,9 @@ if(is_numeric($_REQUEST['n'])){
   if(empty($result))
     echo "NO EXISTEN RESULTADOS";
   else{
-    logSql("", $result);
     echo '<div class="container" style="margin-top:30px">';
     foreach ($result as $cancion) {
-      echo '<a href="cancion.php?n='.$cancion["numero"].'"><b>'.$cancion["numero"].' - '.$cancion["titulo"].'</b></a><br>';
+      echo '<a href="cancion.php?n='.htmlspecialchars($cancion["numero"]).'"><b>'.htmlspecialchars($cancion["numero"]).' - '.htmlspecialchars($cancion["titulo"]).'</b></a><br>';
       echo '<small>'.$cancion["letra"].'</small>';
       echo '<hr>';
     }
@@ -34,12 +33,12 @@ if(is_numeric($_REQUEST['n'])){
 }
 print '<div class="container">';
 if (!empty($_GET['saved'])) {
-  echo '<div class="alert alert-success" role="alert">Canción ' . $result['numero'] . ' modificada correctamente!</div>';
+  echo '<div class="alert alert-success" role="alert">Canción ' . htmlspecialchars($result['numero']) . ' modificada correctamente!</div>';
 }
 ?>
-<h3><?php echo $result['numero'] . '. ' . $result['titulo'] ?></h3>
+<h3><?php echo htmlspecialchars($result['numero']) . '. ' . htmlspecialchars($result['titulo']) ?></h3>
 <?php if(!empty($result['extras'] && $validUser)){
-  print '<h5 class="extras">' . $result['extras'] . '</h5>';
+  print '<h5 class="extras">' . htmlspecialchars($result['extras']) . '</h5>';
 }?>
 <p><?php echo $result['letra'] ?></p>
 <?php

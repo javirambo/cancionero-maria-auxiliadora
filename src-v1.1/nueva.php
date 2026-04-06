@@ -30,10 +30,8 @@ print '<div class="container">';
       <input type="text" class="form-control" id="grupo" name="grupo" list="listaGrupos" placeholder="Coloque el tipo">
       <datalist id="listaGrupos">
         <?php
-        global $conn;
-        $sqlGrupos = 'SELECT grupo FROM Canciones GROUP BY grupo ORDER BY grupo';
-        foreach ($conn->query($sqlGrupos) as $row) {
-          echo '<option value="' . htmlspecialchars($row["grupo"]) . '">';
+        foreach (getGrupos() as $g) {
+          echo '<option value="' . htmlspecialchars($g) . '">';
         }
         ?>
       </datalist>

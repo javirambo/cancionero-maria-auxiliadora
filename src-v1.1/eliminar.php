@@ -10,8 +10,8 @@ if (!$validUser || empty($_REQUEST['n']) || !is_numeric($_REQUEST['n'])) {
 }
 
 $numero = intval($_REQUEST['n']);
-$sql = "DELETE FROM Canciones WHERE numero = " . $numero;
-$conn->exec($sql);
+$stmt = $conn->prepare("DELETE FROM Canciones WHERE numero = :numero");
+$stmt->execute([':numero' => $numero]);
 
 header("Location: index.php");
 exit;

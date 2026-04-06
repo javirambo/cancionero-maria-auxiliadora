@@ -8,7 +8,7 @@ print '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3
   <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="def.css?v=8">
+  <link rel="stylesheet" href="def.css?v=9">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon-192.png">
   <meta name="theme-color" content="#1a6bbf">
@@ -38,14 +38,10 @@ if ($validUser) {
 }
 
 print '<hr class="hamb-sep">';
-global $conn;
-if ($conn) {
-    $sql = 'SELECT grupo FROM Canciones GROUP BY grupo';
-    foreach ($conn->query($sql) as $row) {
-        print '<a href="index.php?g='.urlencode($row["grupo"]).'" class="hamb-grupo">'.$row["grupo"].'</a>';
-    }
-    print '<a href="index.php" class="hamb-todas">Todas</a>';
+foreach (getGrupos() as $g) {
+    print '<a href="index.php?g='.urlencode($g).'" class="hamb-grupo">'.htmlspecialchars($g).'</a>';
 }
+print '<a href="index.php" class="hamb-todas">Todas</a>';
 
 print '<hr class="hamb-sep">';
 if ($validUser) {

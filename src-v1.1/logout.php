@@ -1,7 +1,6 @@
 <?php
 session_start();
-setcookie(session_name(), '', 100);
+setcookie(session_name(), '', time() - 3600, '/');
 session_unset();
 session_destroy();
-$_SESSION = array();
 header("location:index.php");
