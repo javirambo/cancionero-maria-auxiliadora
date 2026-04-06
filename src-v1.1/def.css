@@ -1,3 +1,7 @@
+body {
+  padding-bottom: 50px;
+}
+
 .c4 {
   padding: 1px 5px 0 5px;
 }
@@ -120,13 +124,16 @@
 
 .sticky-b {
 	background-color: #ffffff;
-	position: sticky;
+	position: fixed;
 	bottom: 0;
+	left: 0;
+	right: 0;
 	padding: 8px;
 	display: flex;
 	align-items: center;
 	gap: 6px;
 	flex-wrap: wrap;
+	z-index: 100;
 }
 
 .btn-ssm {

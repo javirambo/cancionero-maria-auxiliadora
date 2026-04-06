@@ -34,10 +34,7 @@ if ($validUser) {
         print '<a href="modificar.php?n='.$nroCancion.'">Modificar</a>';
         print '<a href="#" class="hamb-red" onclick="if(confirm(\'Elimina la canción número '.$nroCancion.'?\')) location.href=\'eliminar.php?n='.$nroCancion.'\'">Eliminar</a>';
     }
-    print '<a href="backup.php">Backup</a>
-        <a href="logout.php" class="hamb-gray">Logout</a>';
-} else {
-    print '<a href="login.php">Login</a>';
+    print '<a href="backup.php">Backup</a>';
 }
 
 print '<hr class="hamb-sep">';
@@ -48,6 +45,13 @@ if ($conn) {
         print '<a href="index.php?g='.urlencode($row["grupo"]).'" class="hamb-grupo">'.$row["grupo"].'</a>';
     }
     print '<a href="index.php" class="hamb-todas">Todas</a>';
+}
+
+print '<hr class="hamb-sep">';
+if ($validUser) {
+    print '<a href="logout.php" class="hamb-gray">Logout</a>';
+} else {
+    print '<a href="login.php" class="hamb-gray">Login</a>';
 }
 
 print '  </div>

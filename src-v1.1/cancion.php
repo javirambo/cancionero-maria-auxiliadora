@@ -42,7 +42,7 @@ if (!empty($_GET['saved'])) {
   print '<h5 class="extras">' . $result['extras'] . '</h5>';
 }?>
 <p><?php echo $result['letra'] ?></p>
-<?php require_once 'buscar.php'; ?>
 <?php
 print '</div>';
+require_once 'buscar.php';
 require_once 'i-end.php';
