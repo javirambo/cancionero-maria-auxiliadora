@@ -65,9 +65,9 @@ function buscarCancion($numero)
 
     foreach ($stmt as $row) {
         $array["grupo"] = $row["grupo"];
-        $array["titulo"] = $row["titulo"];
+        $array["titulo"] = html_entity_decode($row["titulo"], ENT_QUOTES, 'UTF-8');
         $array["extras"] = $row["extras"];
-        $array["letra"] = boldizar($row["letra"]);
+        $array["letra"] = boldizar(html_entity_decode($row["letra"], ENT_QUOTES, 'UTF-8'));
     }
     return $array;
 }
@@ -100,8 +100,8 @@ function buscarCancionPorTexto($text)
     foreach ($stmt as $row) {
         $cancion = array(
             "numero" => $row["numero"],
-            "titulo" => $row["titulo"],
-            "letra" => boldizar($row["letra"])
+            "titulo" => html_entity_decode($row["titulo"], ENT_QUOTES, 'UTF-8'),
+            "letra" => boldizar(html_entity_decode($row["letra"], ENT_QUOTES, 'UTF-8'))
         );
         array_push($canciones, $cancion);
     }

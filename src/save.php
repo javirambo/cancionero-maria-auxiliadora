@@ -9,9 +9,9 @@ $stmt = $conn->prepare("SELECT Titulo FROM Canciones WHERE Numero = :numero");
 $stmt->execute([':numero' => $_POST['numero']]);
 $existeCancion = $stmt->rowCount() == 1;
 
-$letra = htmlentities($_POST['letra'], ENT_QUOTES, 'UTF-8');
-$titulo = htmlentities($_POST['titulo'], ENT_QUOTES, 'UTF-8');
-$grupo = htmlentities($_POST['grupo'], ENT_QUOTES, 'UTF-8');
+$letra = trim($_POST['letra']);
+$titulo = trim($_POST['titulo']);
+$grupo = trim($_POST['grupo']);
 
 // si es update exitoso, redirigir a la cancion:
 if (!empty($titulo) && !empty($letra) && !empty($_POST['update']) && $existeCancion) {

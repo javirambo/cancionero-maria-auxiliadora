@@ -17,6 +17,7 @@ if (!empty($grupo)) {
 
 print '<div class="indice">';
 foreach ($stmt as $row) {
-  print '<p>' . htmlspecialchars($row["numero"]) . '. <a href="cancion.php?n='. htmlspecialchars($row["numero"]) .'">' . htmlspecialchars($row["titulo"]) . "</a></p>";
+  $titulo = html_entity_decode($row["titulo"], ENT_QUOTES, 'UTF-8');
+  print '<p>' . htmlspecialchars($row["numero"]) . '. <a href="cancion.php?n='. htmlspecialchars($row["numero"]) .'">' . htmlspecialchars($titulo) . "</a></p>";
 }
 print '</div>';
